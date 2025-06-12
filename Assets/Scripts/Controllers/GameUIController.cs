@@ -6,7 +6,7 @@ namespace Controllers
 {
     public class GameUIController : MonoBehaviour
     {
-        [SerializeField] private Player _player;
+        [SerializeField] private Health _health;
         [SerializeField] private Button _takeDamageButton;
         [SerializeField] private Button _healButton;
         [SerializeField] private float _damageValue = 10f;
@@ -20,12 +20,12 @@ namespace Controllers
 
         private void PerformDamage()
         {
-            _player.TakeDamage(_damageValue);
+            _health.TakeDamage(_damageValue);
         }
 
         private void PerformHeal()
         {
-            _player.Heal(_healValue);
+            _health.Heal(_healValue);
         }
     }
 }

@@ -1,32 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Models
 {
-    public class SmoothHealthBar : MonoBehaviour
+    public class SmoothHealthBar : HealthBar
     {
         [SerializeField] private Slider _slider;
-        [SerializeField] private float _smoothSpeed = 5f;
+        [SerializeField] private float _delay = 0.7f;
 
-        private float _targetHealth;
-        
-        private void Update()
+        protected override void ChangeValue(float health)
         {
-            _slider.value =
-                Mathf.Abs(_slider.value - _targetHealth) > 0.1f ?
-                    Mathf.Lerp(_slider.value, _targetHealth, _smoothSpeed * Time.deltaTime) : _targetHealth;
+            StartCoroutine(ChangeSmoothlyValue(health));
         }
 
-        public void SetHealth(float health)
+        private IEnumerator ChangeSmoothlyValue(float health)
         {
-            _targetHealth = health;
-        }
-        
-        public void SetMaxHealth(float health)
-        {
-            _targetHealth = health;
-            _slider.maxValue = health;
-            _slider.value = health;
+            float elapsedTime = 0;
+
+            while (elapsedTime < _delay)
+            {
+                elapsedTime += Time.deltaTime;
+                _slider.value = Mathf.MoveTowards(_slider.value, health, elapsedTime / _delay);
+                yield return null;
+            }
         }
     }
 }

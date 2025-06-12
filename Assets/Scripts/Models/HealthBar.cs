@@ -1,21 +1,23 @@
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace Models
 {
-    public class HealthBar : MonoBehaviour
+    public abstract class HealthBar : MonoBehaviour
     {
-        [SerializeField] private Slider _slider;
+        [SerializeField] private Health _health;
 
-        public void SetHealth(float health)
+        private void OnEnable()
         {
-            _slider.value = health;
+            _health.ValueChanged += ChangeValue;
         }
 
-        public void SetMaxHealth(float health)
+        private void OnDisable()
         {
-            _slider.maxValue = health;
-            _slider.value = health;
+            _health.ValueChanged -= ChangeValue;
         }
+        
+        protected float GetMaxHealth() => _health.GetMaxValue();
+
+        protected abstract void ChangeValue(float health);
     }
 }
