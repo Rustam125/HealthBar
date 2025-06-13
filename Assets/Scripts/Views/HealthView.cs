@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Models;
+using UnityEngine;
 
-namespace Models
+namespace Views
 {
-    public abstract class HealthBar : MonoBehaviour
+    public abstract class HealthView : MonoBehaviour
     {
         [SerializeField] private Health _health;
 
@@ -16,8 +17,6 @@ namespace Models
             _health.ValueChanged -= ChangeValue;
         }
         
-        protected float GetMaxHealth() => _health.GetMaxValue();
-
-        protected abstract void ChangeValue(float health);
+        protected abstract void ChangeValue(float health, float maxHealth);
     }
 }

@@ -6,36 +6,31 @@ namespace Models
 {
     public class Health : MonoBehaviour, IDamageable, IHealable
     {
-        [SerializeField] private float _value = 100;
-
         private const float MaxValue = 100;
         private const float MinValue = 0;
+
+        [SerializeField] private float _value = 100;
+
         private bool _isDead;
 
-        public event Action<float> ValueChanged;
-        
+        public event Action<float, float> ValueChanged;
+
 
         private void Start()
         {
-            ValueChanged?.Invoke(_value);
+            ValueChanged?.Invoke(_value, MaxValue);
         }
-        
-        public float GetMaxValue() => MaxValue; 
 
         public void TakeDamage(float damage)
         {
-            if (damage > 0)
+            if (damage <= 0 || _isDead)
             {
-                _value -= damage;
-
-                if (_value <= MinValue)
-                {
-                    _value = MinValue;
-                    _isDead = true;
-                }
+                return;
             }
 
-            ValueChanged?.Invoke(_value);
+            _value = Mathf.Clamp(_value - damage, MinValue, MaxValue);
+            _isDead = Mathf.Approximately(_value, MinValue);
+            ValueChanged?.Invoke(_value, MaxValue);
         }
 
         public void Heal(float amount)
@@ -45,14 +40,8 @@ namespace Models
                 return;
             }
 
-            _value += amount;
-
-            if (_value > MaxValue)
-            {
-                _value = MaxValue;
-            }
-
-            ValueChanged?.Invoke(_value);
+            _value = Mathf.Clamp(_value + amount, MinValue, MaxValue);
+            ValueChanged?.Invoke(_value, MaxValue);
         }
     }
 }
