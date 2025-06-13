@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 namespace Views
 {
-    public class SharpHealthView : HealthView
+    public class HealthBar : HealthView
     {
-        [SerializeField] private Slider _slider;
+        [SerializeField] protected Slider _slider;
         
         protected override void ChangeValue(float health, float maxHealth)
         {

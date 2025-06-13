@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Views
 {
-    public class SmoothHealthView : HealthView
+    public class SmoothHealthBar : HealthBar
     {
-        [SerializeField] private Slider _slider;
         [SerializeField] private float _delay = 0.5f;
 
         private Coroutine _coroutine;
